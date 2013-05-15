@@ -1,0 +1,6 @@
+[submodule "bundle/syntastic"]
+	path = bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "bundle/vim-blackboard"]
+	path = bundle/vim-blackboard
+	url = https://github.com/rickharris/vim-blackboard.git
