@@ -30,7 +30,7 @@ if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
 else
   set backup		" keep a backup file
-  set backupdir=/home/marijn/backup
+  set backupdir=/Users/rodin/backup
 endif
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
@@ -42,9 +42,6 @@ set smartcase
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
 
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
 " This is an alternative that also works in block mode, but the deleted
 " text is lost and it only works for putting the current register.
 "vnoremap p "_dp
@@ -54,7 +51,7 @@ map Q gq
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
-  set guifont=Consolas
+  "set guifont=Consolas
 endif
 
 " Only do this part when compiled with support for autocommands.
@@ -89,11 +86,6 @@ else
 
 endif " has("autocmd")
 
-" Spellcheck
-cab spell :w<CR>:!aspell -c  %<CR>:e<CR><CR>
-cab espell :w<CR>:!newsbody -qs -n % -p aspell check \%f<CR>:e<CR><CR>
-
-"color darkblue
 color blackboard
 set tabstop=4
 set shiftwidth=4
@@ -113,40 +105,16 @@ if has("gui_running")
 endif
 
 
-" Make
-map <C-B> :make<CR>
-
-" goto line quickly
-map - G
-
-" Taglist
-let Tlist_Ctags_Cmd = '/usr/local/bin/exctags'
-
 " Security concerns
 set nomodeline
 
-" Folding
-" set foldmethod=marker
-"set foldclose=all
 
 " Turn off annoying beeping
 set vb
 
-set statusline="%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).\"\,\"}%{\"\ \".&ff}%{(&eol==0?\",noeol\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P"
-
+" Always move visually
 map j gj
 map k gk
-
-noremap <silent> ZC :bo vs<cr>Ljzt:setl scb<cr><c-w>p:setl scb<cr>
-
-" if has("multi_byte")
-" 	if &termencoding == ""
-" 		let &termencoding = &encoding
-" 	endif
-" 	set encoding=utf-8
-" 	setglobal fileencoding=utf-8 bomb
-" 	set fileencodings=ucs-bom,utf-8,latin1
-" endif
 
 " Whitespace settings for different filetypes
 if has("autocmd")
@@ -154,6 +122,8 @@ if has("autocmd")
 	filetype plugin indent on
 	autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
 	autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
+	autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
+	autocmd FileType xslt setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
 	autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
 	autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
 	autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
@@ -161,26 +131,37 @@ if has("autocmd")
 	autocmd FileType tex setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist
 	autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80 omnifunc=pythoncomplete#Complete
 	autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80
+	autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist
 endif
 
 command! -nargs=* Wrap set wrap linebreak nolist
 
 " Only use pyflakes, not pep8
 let g:syntastic_python_checkers=['pyflakes']
+let g:ipy_completefunc='none'
 
-" Gundo
+function! TogglePep8()
+	let s:pep8_ind = index(g:syntastic_python_checkers, 'pep8')
+	if s:pep8_ind >= 0
+		call remove(g:syntastic_python_checkers, s:pep8_ind)
+	else
+		call add(g:syntastic_python_checkers, 'pep8')
+	endif
+endfunction
+
+map <leader>p :call TogglePep8()<CR>
+
+"s:pep8_ind Gundo
 map <leader>g :GundoToggle<CR>
-let g:SuperTabDefaultCompletionType = "context"
 
 " CtrlP
-let g:ctrlp_map = '<leader>t'
-let g:ctrlp_match_window_bottom = 0
-let g:ctrlp_match_window_reversed = 0
-let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_dotfiles = 0
-let g:ctrlp_switch_buffer = 0
+map C-p :CtrlP
 
 " NERD Tree
 nmap <leader>e :NERDTreeToggle<CR>
 
+" Insert literal TAB character always
+inoremap <C-Tab> <Tab> 
+
+" Supertab
+let g:SuperTabDefaultCompletionType = "context"
