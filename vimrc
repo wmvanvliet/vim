@@ -86,7 +86,11 @@ else
 
 endif " has("autocmd")
 
+set background=dark
 color blackboard
+"let g:solarized_termcolors = 256  " New line!!
+"let g:solarized_termtrans=1
+"colorscheme solarized
 set tabstop=4
 set shiftwidth=4
 set scrolloff=3
@@ -102,6 +106,9 @@ if has("gui_running")
 
 	" Remove toolbar
 	set guioptions-=T
+
+	" Turn off the blinking cursor
+	set gcr=n:blinkon0
 endif
 
 
@@ -136,6 +143,18 @@ endif
 
 command! -nargs=* Wrap set wrap linebreak nolist
 
+" The all important leader
+let mapleader = " "
+
+" Things I do often
+nnoremap <Leader>o :CtrlP<CR>
+nnoremap <Leader>w :w<CR>
+nmap <Leader><Leader> V
+inoremap <C-a> <C-o>^
+inoremap <C-e> <C-o>$
+noremap <C-a> ^
+noremap <C-e> $
+
 " Only use pyflakes, not pep8
 let g:syntastic_python_checkers=['pyflakes']
 let g:ipy_completefunc='none'
@@ -143,7 +162,7 @@ let g:ipy_completefunc='none'
 function! TogglePep8()
 	let s:pep8_ind = index(g:syntastic_python_checkers, 'pep8')
 	if s:pep8_ind >= 0
-		call remove(g:syntastic_python_checkers, s:pep8_ind)
+		call remove(g:syntastic_python_checkers, s:pep9_ind)
 	else
 		call add(g:syntastic_python_checkers, 'pep8')
 	endif
@@ -165,3 +184,13 @@ inoremap <C-Tab> <Tab>
 
 " Supertab
 let g:SuperTabDefaultCompletionType = "context"
+
+" Airline
+set laststatus=2
+
+" Tagbar
+nmap <leader>t :TagbarToggle<CR>
+let g:tagbar_autoclose=1
+
+" IPython
+let g:ipy_monitor_subchannel=0
