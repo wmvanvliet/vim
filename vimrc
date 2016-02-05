@@ -89,7 +89,11 @@ else
 
 endif " has("autocmd")
 
+set background=dark
 color blackboard
+"let g:solarized_termcolors = 256  " New line!!
+"let g:solarized_termtrans=1
+"colorscheme solarized
 set tabstop=4
 set shiftwidth=4
 set scrolloff=3
@@ -105,6 +109,9 @@ if has("gui_running")
 
 	" Remove toolbar
 	set guioptions-=T
+
+	" Turn off the blinking cursor
+	set gcr=n:blinkon0
 endif
 
 
@@ -138,7 +145,19 @@ endif
 
 command! -nargs=* Wrap set wrap linebreak nolist
 
-" Only use pyflakes, not PEP8
+" The all important leader
+let mapleader = " "
+
+" Things I do often
+nnoremap <Leader>o :CtrlP<CR>
+nnoremap <Leader>w :w<CR>
+nmap <Leader><Leader> V
+inoremap <C-a> <C-o>^
+inoremap <C-e> <C-o>$
+noremap <C-a> ^
+noremap <C-e> $
+
+" Only use pyflakes, not pep8
 let g:syntastic_python_checkers=['pyflakes']
 let g:ipy_completefunc='none'
 
@@ -167,9 +186,9 @@ nmap <leader>o :CtrlP<CR>
 nmap <leader>e :NERDTreeToggle<CR>
 nmap <leader>r :NERDTreeFind<CR>
 
-" Tag list
-nmap <leader>t :TlistToggle<CR>
-let Tlist_Show_One_File = 1  " only show tags for current file
+" Tagbar
+nmap <leader>t :TagbarToggle<CR>
+let g:tagbar_autoclose=1
 
 " Insert literal TAB character always
 inoremap <C-Tab> <Tab> 
@@ -208,3 +227,6 @@ if has("autocmd")
 	autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lv :VimtexView<cr>
 	autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>t :VimtexTocToggle<CR>
 endif
+
+" Airline
+set laststatus=2
