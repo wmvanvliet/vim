@@ -30,7 +30,7 @@ if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
 else
   set backup		" keep a backup file
-  set backupdir=/Users/rodin/backup
+  set backupdir=/net/psyko/home/marijn/backup
 endif
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
@@ -51,8 +51,11 @@ set smartcase
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
-  "set guifont=Consolas
+  set guifont=Inconsolata\ 12
 endif
+
+" Leader key is space
+let mapleader = " "
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -121,47 +124,87 @@ if has("autocmd")
 	filetype on
 	filetype plugin indent on
 	autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
-	autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
-	autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
+	autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak breakindent nolist
+	autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak breakindent nolist
 	autocmd FileType xslt setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
 	autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
 	autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
-	autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
-	autocmd FileType text setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist
-	autocmd FileType tex setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist
-	autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80 omnifunc=pythoncomplete#Complete
-	autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80
-	autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist
+	autocmd FileType text setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak breakindent nolist
+	autocmd FileType tex setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak breakindent nolist
+	autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab " omnifunc=pythoncomplete#Complete
+	autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab 
+	autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak breakindent nolist
 endif
 
 command! -nargs=* Wrap set wrap linebreak nolist
 
-" Only use pyflakes, not pep8
+" Only use pyflakes, not PEP8
 let g:syntastic_python_checkers=['pyflakes']
 let g:ipy_completefunc='none'
 
+" Function to enable PEP8 checking
 function! TogglePep8()
 	let s:pep8_ind = index(g:syntastic_python_checkers, 'pep8')
 	if s:pep8_ind >= 0
 		call remove(g:syntastic_python_checkers, s:pep8_ind)
+		setlocal colorcolumn=0
 	else
 		call add(g:syntastic_python_checkers, 'pep8')
+		setlocal colorcolumn=80
 	endif
 endfunction
 
-map <leader>p :call TogglePep8()<CR>
+" Python PEP8 checking
+nmap <leader>8 :call TogglePep8()<CR>
 
-"s:pep8_ind Gundo
-map <leader>g :GundoToggle<CR>
+" Gundo
+nmap <leader>g :GundoToggle<CR>
 
 " CtrlP
-map C-p :CtrlP
+nmap <leader>o :CtrlP<CR>
 
 " NERD Tree
 nmap <leader>e :NERDTreeToggle<CR>
+nmap <leader>r :NERDTreeFind<CR>
+
+" Tag list
+nmap <leader>t :TlistToggle<CR>
+let Tlist_Show_One_File = 1  " only show tags for current file
 
 " Insert literal TAB character always
 inoremap <C-Tab> <Tab> 
 
 " Supertab
-let g:SuperTabDefaultCompletionType = "context"
+" let g:SuperTabDefaultCompletionType = "context"
+
+" Copy/paste
+map <leader>y "+y
+map <leader>p "+p
+map <leader>P "+P
+
+" Surround function object
+nmap <silent> dsf ds)db
+nmap <silent> csf %cb
+
+" GitGutter
+nmap <leader>s :GitGutterSignsToggle<CR>
+let g:gitgutter_signs = 0
+
+" IPython
+let g:ipy_monitor_subchannel = 0
+
+" VimTex
+let g:vimtex_view_method = 'zathura'
+"let g:vimtex_view_general_viewer = '/usr/bin/okular'
+"let g:vimtex_view_general_options = '--unique @pdf\#src:@line@tex'
+"let g:vimtex_view_general_options_latexmk = '--unique'
+let g:vimtex_fold_enabled = 0
+let g:vimtex_indent_enabled = 0
+let g:tex_flavor = 'latex'
+if has("autocmd")
+	autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lm :VimtexCompile<cr>
+	autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lc :VimtexClean<cr>
+	autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lw :VimtexWordCount<cr>
+	autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lv :VimtexView<cr>
+	autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>t :VimtexTocToggle<CR>
+endif
