@@ -4,9 +4,6 @@
 [submodule "bundle/vim-blackboard"]
 	path = bundle/vim-blackboard
 	url = https://github.com/rickharris/vim-blackboard.git
-[submodule "bundle/supertab"]
-	path = bundle/supertab
-	url = https://github.com/ervandew/supertab.git
 [submodule "bundle/gundo"]
 	path = bundle/gundo
 	url = https://github.com/sjl/gundo.vim.git
@@ -37,18 +34,27 @@
 [submodule "bundle/vim-airline"]
 	path = bundle/vim-airline
 	url = https://github.com/bling/vim-airline.git
-[submodule "bundle/nerdcommenter"]
-	path = bundle/nerdcommenter
-	url = https://github.com/scrooloose/nerdcommenter.git
-[submodule "bundle/slimv"]
-	path = bundle/slimv
-	url = https://github.com/kovisoft/slimv.git
 [submodule "bundle/vim-surround"]
 	path = bundle/vim-surround
 	url = https://github.com/tpope/vim-surround
-[submodule "bundle/python-pep8"]
-	path = bundle/python-pep8
+[submodule "bundle/vim-python-pep8-indent"]
+	path = bundle/vim-python-pep8-indent
 	url = https://github.com/hynek/vim-python-pep8-indent.git
+[submodule "bundle/vimtex"]
+	path = bundle/vimtex
+	url = https://github.com/lervag/vimtex.git
+[submodule "bundle/vim-monochrome"]
+	path = bundle/vim-monochrome
+	url = https://github.com/fxn/vim-monochrome.git
+[submodule "bundle/vim-commentary"]
+	path = bundle/vim-commentary
+	url = git://github.com/tpope/vim-commentary.git
+[submodule "bundle/vim-repeat"]
+	path = bundle/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule "bundle/gitgutter"]
+	path = bundle/gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git
 [submodule "bundle/vim-kerbulator"]
 	path = bundle/vim-kerbulator
 	url = https://github.com/wmvanvliet/vim-kerbulator.git
@@ -58,3 +64,9 @@
 [submodule "bundle/tagbar"]
 	path = bundle/tagbar
 	url = https://github.com/majutsushi/tagbar.git
+[submodule "bundle/vim-textobj-python"]
+	path = bundle/vim-textobj-python
+	url = https://github.com/bps/vim-textobj-python.git
+[submodule "bundle/vim-textobj-user"]
+	path = bundle/vim-textobj-user
+	url = https://github.com/kana/vim-textobj-user.git

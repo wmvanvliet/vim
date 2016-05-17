@@ -1,14 +1,3 @@
-" An example for a vimrc file.
-"
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2002 Sep 19
-"
-" To use it, copy it to
-"     for Unix and OS/2:  ~/.vimrc
-"	      for Amiga:  s:.vimrc
-"  for MS-DOS and Win32:  $VIM\_vimrc
-"	    for OpenVMS:  sys$login:.vimrc
-"
 filetype off
 call pathogen#incubate()
 call pathogen#helptags()
@@ -26,37 +15,27 @@ set nocompatible
 " allow backspacing over everything in insert mode
 set backspace=start,eol,indent
 
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file
-  set backupdir=/Users/rodin/backup
-  " Persistent undo
-  set undodir=/Users/rodin/backup
-  set undofile
-endif
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
+set backup    " keep a backup file
+set backupdir=/Users/rodin/backup
+" Persistent undo
+set undodir=/Users/rodin/backup
+set undofile
+set history=50    " keep 50 lines of command line history
+set ruler    " show the cursor position all the time
+set showcmd    " display incomplete commands
+set incsearch    " do incremental searching
 set ignorecase
 set smartcase
-
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
-" let &guioptions = substitute(&guioptions, "t", "", "g")
-
-" This is an alternative that also works in block mode, but the deleted
-" text is lost and it only works for putting the current register.
-"vnoremap p "_dp
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
-  "set guifont=Consolas
-  set guifont=Source\ Code\ Pro
 endif
+
+" Leader key is space
+let mapleader = " "
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -70,9 +49,6 @@ if has("autocmd")
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
   au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
@@ -88,10 +64,8 @@ if has("autocmd")
   au BufRead,BufNewFile *.ino set filetype=arduino
 
 else
-
-  set autoindent		" always set autoindenting on
-
-endif " has("autocmd")
+  set autoindent    " always set autoindenting on
+endif
 
 set cursorline
 set t_Co=256
@@ -110,14 +84,29 @@ set nowrap
 
 if has("gui_running")
 
-	" Remove menu bar
-	set guioptions-=m
+  " Remove menu bar
+  set guioptions-=m
 
-	" Remove toolbar
-	set guioptions-=T
+  " Remove toolbar
+  set guioptions-=T
 
-	" Turn off the blinking cursor
-	set gcr=n:blinkon0
+  " Turn off the blinking cursor
+  set gcr=n:blinkon0
+
+  " Set font
+  if has("win32")
+    set guifont=Consolas:h12
+  else
+    if has("unix")
+      let s:uname = system("uname")
+      if s:uname == "Darwin\n"
+		set guifont=Monaco:h10
+	    set noantialias
+      else
+        set guifont=Inconsolata\ 12
+      endif
+	endif
+  endif
 endif
 
 
@@ -134,21 +123,21 @@ map k gk
 
 " Whitespace settings for different filetypes
 if has("autocmd")
-	filetype on
-	filetype plugin indent on
-	autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
-	autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist breakindent
-	autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist breakindent
-	autocmd FileType xslt setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
-	autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
-	autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
-	autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
-	autocmd FileType text setlocal ts=8 sts=8 sw=8 noexpandtab linebreak wrap nolist breakindent
-	autocmd FileType tex setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist breakindent
-	autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80 omnifunc=pythoncomplete#Complete
-	autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80
-	autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist breakindent
-	autocmd FileType arduino setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
+  filetype on
+  filetype plugin indent on
+  autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
+  autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist breakindent
+  autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist breakindent
+  autocmd FileType xslt setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
+  autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
+  autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
+  autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
+  autocmd FileType text setlocal ts=8 sts=8 sw=8 noexpandtab linebreak wrap nolist breakindent
+  autocmd FileType tex setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist breakindent
+  autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80 omnifunc=pythoncomplete#Complete
+  autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80
+  autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist breakindent
+  autocmd FileType arduino setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
 endif
 
 command! -nargs=* Wrap set wrap linebreak nolist
@@ -159,6 +148,7 @@ let mapleader = " "
 " Things I do often
 nnoremap <Leader>o :CtrlP<CR>
 nnoremap <Leader>w :w<CR>
+nnoremap <Leader>t :TlistToggle<CR>
 nmap <Leader><Leader> V
 inoremap <C-a> <C-o>^
 inoremap <C-e> <C-o>$
@@ -169,41 +159,73 @@ noremap <C-e> $
 let g:syntastic_python_checkers=['pyflakes']
 let g:ipy_completefunc='none'
 
+" Function to enable PEP8 checking
 function! TogglePep8()
-	let s:pep8_ind = index(g:syntastic_python_checkers, 'pep8')
-	if s:pep8_ind >= 0
-		call remove(g:syntastic_python_checkers, s:pep8_ind)
-	else
-		call add(g:syntastic_python_checkers, 'pep8')
-	endif
+  let s:pep8_ind = index(g:syntastic_python_checkers, 'pep8')
+  if s:pep8_ind >= 0
+    call remove(g:syntastic_python_checkers, s:pep8_ind)
+    setlocal colorcolumn=0
+  else
+    call add(g:syntastic_python_checkers, 'pep8')
+    setlocal colorcolumn=80
+  endif
 endfunction
 
-map <leader>p :call TogglePep8()<CR>
+" Python PEP8 checking
+nmap <leader>8 :call TogglePep8()<CR>
 
 let python_version_2 = 1
 let python_highlight_all = 1
 
-"s:pep8_ind Gundo
 map <leader>g :GundoToggle<CR>
 
 " CtrlP
-map C-p :CtrlP
+nmap <leader>o :CtrlP<CR>
 
 " NERD Tree
 nmap <leader>e :NERDTreeToggle<CR>
+nmap <leader>r :NERDTreeFind<CR>
+
+" Tagbar
+nmap <leader>t :TlistToggle<CR>
 
 " Insert literal TAB character always
 inoremap <C-Tab> <Tab> 
 
 " Supertab
-let g:SuperTabDefaultCompletionType = "context"
+" let g:SuperTabDefaultCompletionType = "context"
+
+" Copy/paste
+map <leader>y "+y
+map <leader>p "+p
+map <leader>P "+P
+
+" Surround function object
+nmap <silent> dsf ds)db
+nmap <silent> csf %cb
+
+" GitGutter
+nmap <leader>s :GitGutterSignsToggle<CR>
+let g:gitgutter_signs = 0
+
+" IPython
+let g:ipy_monitor_subchannel = 0
+
+" VimTex
+let g:vimtex_view_method = 'zathura'
+"let g:vimtex_view_general_viewer = '/usr/bin/okular'
+"let g:vimtex_view_general_options = '--unique @pdf\#src:@line@tex'
+"let g:vimtex_view_general_options_latexmk = '--unique'
+let g:vimtex_fold_enabled = 0
+let g:vimtex_indent_enabled = 0
+let g:tex_flavor = 'latex'
+if has("autocmd")
+  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lm :VimtexCompile<cr>
+  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lc :VimtexClean<cr>
+  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lw :VimtexWordCount<cr>
+  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lv :VimtexView<cr>
+  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>t :VimtexTocToggle<CR>
+endif
 
 " Airline
 set laststatus=2
-
-" Tagbar
-nmap <leader>t :TagbarToggle<CR>
-let g:tagbar_autoclose=1
-
-" IPython
-let g:ipy_monitor_subchannel=0
