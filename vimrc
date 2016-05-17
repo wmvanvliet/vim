@@ -31,6 +31,9 @@ if has("vms")
 else
   set backup		" keep a backup file
   set backupdir=/Users/rodin/backup
+  " Persistent undo
+  set undodir=/Users/rodin/backup
+  set undofile
 endif
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
@@ -52,6 +55,7 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
   "set guifont=Consolas
+  set guifont=Source\ Code\ Pro
 endif
 
 " Only do this part when compiled with support for autocommands.
@@ -80,14 +84,20 @@ if has("autocmd")
 
   augroup END
 
+  au BufRead,BufNewFile *.pde set filetype=arduino
+  au BufRead,BufNewFile *.ino set filetype=arduino
+
 else
 
   set autoindent		" always set autoindenting on
 
 endif " has("autocmd")
 
+set cursorline
+set t_Co=256
 set background=dark
 color blackboard
+
 "let g:solarized_termcolors = 256  " New line!!
 "let g:solarized_termtrans=1
 "colorscheme solarized
@@ -99,7 +109,6 @@ set number
 set nowrap
 
 if has("gui_running")
-	set cursorline
 
 	" Remove menu bar
 	set guioptions-=m
@@ -128,17 +137,18 @@ if has("autocmd")
 	filetype on
 	filetype plugin indent on
 	autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
-	autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
-	autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
+	autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist breakindent
+	autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist breakindent
 	autocmd FileType xslt setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
 	autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
 	autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
 	autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
-	autocmd FileType text setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist
-	autocmd FileType tex setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist
+	autocmd FileType text setlocal ts=8 sts=8 sw=8 noexpandtab linebreak wrap nolist breakindent
+	autocmd FileType tex setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist breakindent
 	autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80 omnifunc=pythoncomplete#Complete
 	autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80
-	autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist
+	autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist breakindent
+	autocmd FileType arduino setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
 endif
 
 command! -nargs=* Wrap set wrap linebreak nolist
@@ -162,13 +172,16 @@ let g:ipy_completefunc='none'
 function! TogglePep8()
 	let s:pep8_ind = index(g:syntastic_python_checkers, 'pep8')
 	if s:pep8_ind >= 0
-		call remove(g:syntastic_python_checkers, s:pep9_ind)
+		call remove(g:syntastic_python_checkers, s:pep8_ind)
 	else
 		call add(g:syntastic_python_checkers, 'pep8')
 	endif
 endfunction
 
 map <leader>p :call TogglePep8()<CR>
+
+let python_version_2 = 1
+let python_highlight_all = 1
 
 "s:pep8_ind Gundo
 map <leader>g :GundoToggle<CR>
