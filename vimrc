@@ -16,9 +16,10 @@ set nocompatible
 set backspace=start,eol,indent
 
 set backup    " keep a backup file
-set backupdir=/Users/rodin/backup
+
+set backupdir=~/backup
 " Persistent undo
-set undodir=/Users/rodin/backup
+set undodir=~/backup
 set undofile
 set history=50    " keep 50 lines of command line history
 set ruler    " show the cursor position all the time
