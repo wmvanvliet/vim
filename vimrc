@@ -148,7 +148,6 @@ let mapleader = " "
 " Things I do often
 nnoremap <Leader>o :CtrlP<CR>
 nnoremap <Leader>w :w<CR>
-nnoremap <Leader>t :TlistToggle<CR>
 nmap <Leader><Leader> V
 inoremap <C-a> <C-o>^
 inoremap <C-e> <C-o>$
@@ -187,7 +186,7 @@ nmap <leader>e :NERDTreeToggle<CR>
 nmap <leader>r :NERDTreeFind<CR>
 
 " Tagbar
-nmap <leader>t :TlistToggle<CR>
+nmap <leader>t :Tagbar<CR>
 
 " Insert literal TAB character always
 inoremap <C-Tab> <Tab> 
