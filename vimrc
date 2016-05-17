@@ -135,8 +135,8 @@ if has("autocmd")
   autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
   autocmd FileType text setlocal ts=8 sts=8 sw=8 noexpandtab linebreak wrap nolist breakindent
   autocmd FileType tex setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist breakindent
-  autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80 omnifunc=pythoncomplete#Complete
-  autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab colorcolumn=80
+  autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab omnifunc=pythoncomplete#Complete
+  autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab
   autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist breakindent
   autocmd FileType arduino setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
 endif
