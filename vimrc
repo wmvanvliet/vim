@@ -122,6 +122,13 @@ set vb
 map j gj
 map k gk
 
+" Yank untill end of line
+noremap Y y$
+
+" Allows you to easily replace the current word and all its occurrences.
+nnoremap <Leader>rc :%s/\<<C-r><C-w>\>/
+vnoremap <Leader>rc y:%s/<C-r>"/
+
 " Whitespace settings for different filetypes
 if has("autocmd")
   filetype on
@@ -229,3 +236,6 @@ endif
 
 " Airline
 set laststatus=2
+
+" Argwrap
+nnoremap <silent> <leader>a :ArgWrap<CR>
