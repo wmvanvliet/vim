@@ -76,3 +76,6 @@
 [submodule "/net/psyko/home/marijn/.vim/bundle/vim-argwrap"]
 	path = /net/psyko/home/marijn/.vim/bundle/vim-argwrap
 	url = https://github.com/FooSoft/vim-argwrap
+[submodule "bundle/vim-indent-guides"]
+	path = bundle/vim-indent-guides
+	url = git://github.com/nathanaelkane/vim-indent-guides.git

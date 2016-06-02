@@ -239,3 +239,6 @@ set laststatus=2
 
 " Argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
+
+" Indent guides
+let g:indent_guides_auto_colors = 0
