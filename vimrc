@@ -189,9 +189,8 @@ map <leader>g :GundoToggle<CR>
 " CtrlP
 nmap <leader>o :CtrlP<CR>
 
-" NERD Tree
-nmap <leader>e :NERDTreeToggle<CR>
-nmap <leader>r :NERDTreeFind<CR>
+" File pane
+nmap <leader>e :Lex<CR>
 
 " Tagbar
 nmap <leader>t :Tagbar<CR>
@@ -242,3 +241,7 @@ nnoremap <silent> <leader>a :ArgWrap<CR>
 
 " Indent guides
 let g:indent_guides_auto_colors = 0
+
+" i3 sometimes does a poor job of resizing gvim, making the command prompt
+" disappear. We make its height 2 so it always shows.
+set cmdheight=2
