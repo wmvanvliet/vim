@@ -33,6 +33,7 @@ set smartcase
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
+  set linespace=2
 endif
 
 " Leader key is space
@@ -91,6 +92,12 @@ if has("gui_running")
   " Remove toolbar
   set guioptions-=T
 
+  " Remove scrollbar
+  set guioptions-=r
+  set guioptions-=R
+  set guioptions-=l
+  set guioptions-=L
+
   " Turn off the blinking cursor
   set gcr=n:blinkon0
 
@@ -120,6 +127,13 @@ set vb
 " Always move visually
 map j gj
 map k gk
+
+" Yank untill end of line
+noremap Y y$
+
+" Allows you to easily replace the current word and all its occurrences.
+nnoremap <Leader>rc :%s/\<<C-r><C-w>\>/
+vnoremap <Leader>rc y:%s/<C-r>"/
 
 " Whitespace settings for different filetypes
 if has("autocmd")
@@ -157,6 +171,7 @@ noremap <C-e> $
 " Only use pyflakes, not pep8
 let g:syntastic_python_checkers=['pyflakes']
 let g:ipy_completefunc='none'
+let g:python_highlight_space_errors = 0
 
 " Function to enable PEP8 checking
 function! TogglePep8()
@@ -181,9 +196,8 @@ map <leader>g :GundoToggle<CR>
 " CtrlP
 nmap <leader>o :CtrlP<CR>
 
-" NERD Tree
-nmap <leader>e :NERDTreeToggle<CR>
-nmap <leader>r :NERDTreeFind<CR>
+" File pane
+nmap <leader>e :Lex<CR>
 
 " Tagbar
 nmap <leader>t :Tagbar<CR>
@@ -218,6 +232,7 @@ let g:vimtex_view_method = 'zathura'
 let g:vimtex_fold_enabled = 0
 let g:vimtex_indent_enabled = 0
 let g:tex_flavor = 'latex'
+let g:vimtex_quickfix_ignore_all_warnings = 1
 if has("autocmd")
   autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lm :VimtexCompile<cr>
   autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lc :VimtexClean<cr>
@@ -228,3 +243,13 @@ endif
 
 " Airline
 set laststatus=2
+
+" Argwrap
+nnoremap <silent> <leader>a :ArgWrap<CR>
+
+" Indent guides
+let g:indent_guides_auto_colors = 0
+
+" i3 sometimes does a poor job of resizing gvim, making the command prompt
+" disappear. We make its height 2 so it always shows.
+set cmdheight=2
