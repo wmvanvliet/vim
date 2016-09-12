@@ -33,6 +33,7 @@ set smartcase
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
+  set linespace=2
 endif
 
 " Leader key is space
@@ -90,6 +91,12 @@ if has("gui_running")
 
   " Remove toolbar
   set guioptions-=T
+
+  " Remove scrollbar
+  set guioptions-=r
+  set guioptions-=R
+  set guioptions-=l
+  set guioptions-=L
 
   " Turn off the blinking cursor
   set gcr=n:blinkon0
@@ -165,6 +172,7 @@ noremap <C-e> $
 " Only use pyflakes, not pep8
 let g:syntastic_python_checkers=['pyflakes']
 let g:ipy_completefunc='none'
+let g:python_highlight_space_errors = 0
 
 " Function to enable PEP8 checking
 function! TogglePep8()
@@ -225,6 +233,7 @@ let g:vimtex_view_method = 'zathura'
 let g:vimtex_fold_enabled = 0
 let g:vimtex_indent_enabled = 0
 let g:tex_flavor = 'latex'
+let g:vimtex_quickfix_ignore_all_warnings = 1
 if has("autocmd")
   autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lm :VimtexCompile<cr>
   autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lc :VimtexClean<cr>
