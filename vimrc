@@ -101,8 +101,7 @@ if has("gui_running")
     if has("unix")
       let s:uname = system("uname")
       if s:uname == "Darwin\n"
-		set guifont=Monaco:h10
-	    set noantialias
+		set guifont=Menlo:h12
       else
         set guifont=Inconsolata\ 12
       endif
