@@ -71,6 +71,7 @@ endif
 
 set cursorline
 set t_Co=256
+"set termguicolors
 set background=dark
 color blackboard
 
@@ -169,25 +170,40 @@ inoremap <C-e> <C-o>$
 noremap <C-a> ^
 noremap <C-e> $
 
-" Only use pyflakes, not pep8
-let g:syntastic_python_checkers=['pyflakes']
+" IPython integration
 let g:ipy_completefunc='none'
-let g:python_highlight_space_errors = 0
 
-" Function to enable PEP8 checking
-function! TogglePep8()
-  let s:pep8_ind = index(g:syntastic_python_checkers, 'pep8')
-  if s:pep8_ind >= 0
-    call remove(g:syntastic_python_checkers, s:pep8_ind)
-    setlocal colorcolumn=0
-  else
-    call add(g:syntastic_python_checkers, 'pep8')
-    setlocal colorcolumn=80
-  endif
-endfunction
+let g:ipy_perform_mappings = 0
+map  <buffer> <silent> <leader>x <Plug>(IPython-RunLines)
+map  <buffer> <silent> <leader>d <Plug>(IPython-OpenPyDoc)
+map  <buffer> <silent> <C-Return> <Plug>(IPython-RunCell)
+map  <buffer> <silent> <F12> <Plug>(IPython-PlotCloseAll)
 
-" Python PEP8 checking
-nmap <leader>8 :call TogglePep8()<CR>
+" " Linter
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_save = 1
+" let g:ale_linters = {
+" \   'python': ['flake8']
+" \}
+" " By default, don't worry about PEP8
+" let g:ale_python_flake8_args = "--ignore=E,W"
+" let g:python_highlight_space_errors = 0
+" 
+" " Function to enable PEP8 checking
+" function! TogglePep8()
+"   if g:ale_python_flake8_args == ""
+"     let g:ale_python_flake8_args = "--ignore=E,W"
+"     setlocal colorcolumn=0
+" 	let g:python_highlight_space_errors = 0
+"   else
+"     let g:ale_python_flake8_args = ""
+"     setlocal colorcolumn=80
+" 	let g:python_highlight_space_errors = 1
+"   endif
+" endfunction
+" 
+" " Python PEP8 checking
+" nmap <leader>8 :call TogglePep8()<CR>
 
 let python_version_2 = 1
 let python_highlight_all = 1
