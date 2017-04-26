@@ -48,4 +48,7 @@
 	url = https://github.com/ervandew/supertab.git
 [submodule "bundle/ale"]
 	path = bundle/ale
-	url = https://github.com/w0rp/ale.git
+	url = git@github.com:w0rp/ale.git
+[submodule "bundle/jedi-vim"]
+	path = bundle/jedi-vim
+	url = git@github.com:davidhalter/jedi-vim.git

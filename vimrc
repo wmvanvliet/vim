@@ -179,31 +179,31 @@ map  <buffer> <silent> <leader>d <Plug>(IPython-OpenPyDoc)
 map  <buffer> <silent> <C-Return> <Plug>(IPython-RunCell)
 map  <buffer> <silent> <F12> <Plug>(IPython-PlotCloseAll)
 
-" " Linter
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_save = 1
-" let g:ale_linters = {
-" \   'python': ['flake8']
-" \}
-" " By default, don't worry about PEP8
-" let g:ale_python_flake8_args = "--ignore=E,W"
-" let g:python_highlight_space_errors = 0
-" 
-" " Function to enable PEP8 checking
-" function! TogglePep8()
-"   if g:ale_python_flake8_args == ""
-"     let g:ale_python_flake8_args = "--ignore=E,W"
-"     setlocal colorcolumn=0
-" 	let g:python_highlight_space_errors = 0
-"   else
-"     let g:ale_python_flake8_args = ""
-"     setlocal colorcolumn=80
-" 	let g:python_highlight_space_errors = 1
-"   endif
-" endfunction
-" 
-" " Python PEP8 checking
-" nmap <leader>8 :call TogglePep8()<CR>
+" Linter
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_save = 1
+let g:ale_linters = {
+\   'python': ['flake8']
+\}
+" By default, don't worry about PEP8
+let g:ale_python_flake8_args = "--ignore=E,W"
+let g:python_highlight_space_errors = 0
+
+" Function to enable PEP8 checking
+function! TogglePep8()
+  if g:ale_python_flake8_args == ""
+    let g:ale_python_flake8_args = "--ignore=E,W"
+    setlocal colorcolumn=0
+	let g:python_highlight_space_errors = 0
+  else
+    let g:ale_python_flake8_args = ""
+    setlocal colorcolumn=80
+	let g:python_highlight_space_errors = 1
+  endif
+endfunction
+
+" Python PEP8 checking
+nmap <leader>8 :call TogglePep8()<CR>
 
 let python_version_2 = 1
 let python_highlight_all = 1
@@ -270,3 +270,7 @@ let g:indent_guides_auto_colors = 0
 " i3 sometimes does a poor job of resizing gvim, making the command prompt
 " disappear. We make its height 2 so it always shows.
 set cmdheight=2
+
+" Jedi VIM
+let g:jedi#popup_on_dot = 0
+let g:jedi#show_call_signatures = 2
