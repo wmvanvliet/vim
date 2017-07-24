@@ -1,6 +1,3 @@
-[submodule "bundle/syntastic"]
-	path = bundle/syntastic
-	url = https://github.com/scrooloose/syntastic.git
 [submodule "bundle/vim-blackboard"]
 	path = bundle/vim-blackboard
 	url = https://github.com/rickharris/vim-blackboard.git
@@ -16,45 +13,24 @@
 [submodule "bundle/vim-fugitive"]
 	path = bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
-[submodule "bundle/vim-visual-star-search"]
-	path = bundle/vim-visual-star-search
-	url = https://github.com/nelstrom/vim-visual-star-search
 [submodule "bundle/vim-unimpaired"]
 	path = bundle/vim-unimpaired
 	url = git://github.com/tpope/vim-unimpaired.git
-[submodule "bundle/tabular"]
-	path = bundle/tabular
-	url = https://github.com/godlygeek/tabular.git
 [submodule "bundle/indent-object"]
 	path = bundle/indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
-[submodule "bundle/vim-airline"]
-	path = bundle/vim-airline
-	url = https://github.com/bling/vim-airline.git
 [submodule "bundle/vim-surround"]
 	path = bundle/vim-surround
 	url = https://github.com/tpope/vim-surround
 [submodule "bundle/vimtex"]
 	path = bundle/vimtex
 	url = https://github.com/lervag/vimtex.git
-[submodule "bundle/vim-monochrome"]
-	path = bundle/vim-monochrome
-	url = https://github.com/fxn/vim-monochrome.git
-[submodule "bundle/vim-commentary"]
-	path = bundle/vim-commentary
-	url = git://github.com/tpope/vim-commentary.git
 [submodule "bundle/vim-repeat"]
 	path = bundle/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
-[submodule "bundle/gitgutter"]
-	path = bundle/gitgutter
-	url = https://github.com/airblade/vim-gitgutter.git
 [submodule "bundle/vim-kerbulator"]
 	path = bundle/vim-kerbulator
 	url = https://github.com/wmvanvliet/vim-kerbulator.git
-[submodule "bundle/solarized"]
-	path = bundle/solarized
-	url = https://github.com/vim-scripts/Solarized.git
 [submodule "bundle/tagbar"]
 	path = bundle/tagbar
 	url = https://github.com/majutsushi/tagbar.git
@@ -67,8 +43,8 @@
 [submodule "bundle/supertab"]
 	path = bundle/supertab
 	url = https://github.com/ervandew/supertab.git
-[submodule "/net/psyko/home/marijn/.vim/bundle/vim-argwrap"]
-	path = /net/psyko/home/marijn/.vim/bundle/vim-argwrap
+[submodule "bundle/vim-argwrap"]
+	path = bundle/vim-argwrap
 	url = https://github.com/FooSoft/vim-argwrap
 [submodule "bundle/vim-indent-guides"]
 	path = bundle/vim-indent-guides
