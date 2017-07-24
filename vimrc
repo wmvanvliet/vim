@@ -73,6 +73,7 @@ set cursorline
 set t_Co=256
 set background=dark
 color blackboard
+"color goodwolf
 
 "let g:solarized_termcolors = 256  " New line!!
 "let g:solarized_termtrans=1

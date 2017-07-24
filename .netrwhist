@@ -1,7 +1,2 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/net/lucas/lo/data/redness/code/Redness2code'
-let g:netrw_dirhist_2='/net/psyko/home/marijn/.vim/bundle/vim-blackboard'
-let g:netrw_dirhist_3='/net/psyko/home/marijn/.vim/bundle/vim-blackboard/colors'
-let g:netrw_dirhist_4='/data/marijn/redness1'
-let g:netrw_dirhist_5='/net/lucas/lo/data/redness/semantic_features/AaltoNorms/lemma'
+let g:netrw_dirhist_cnt =0

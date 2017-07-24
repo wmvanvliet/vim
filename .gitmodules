@@ -34,9 +34,6 @@
 [submodule "bundle/vim-surround"]
 	path = bundle/vim-surround
 	url = https://github.com/tpope/vim-surround
-[submodule "bundle/vim-python-pep8-indent"]
-	path = bundle/vim-python-pep8-indent
-	url = https://github.com/hynek/vim-python-pep8-indent.git
 [submodule "bundle/vimtex"]
 	path = bundle/vimtex
 	url = https://github.com/lervag/vimtex.git
@@ -76,9 +73,15 @@
 [submodule "bundle/vim-indent-guides"]
 	path = bundle/vim-indent-guides
 	url = git://github.com/nathanaelkane/vim-indent-guides.git
-[submodule "bundle/vimpager"]
-	path = bundle/vimpager
-	url = https://github.com/rkitover/vimpager.git
 [submodule "bundle/vim-HiLinkTrace"]
 	path = bundle/vim-HiLinkTrace
 	url = https://github.com/gerw/vim-HiLinkTrace.git
+[submodule "bundle/badwolf"]
+	path = bundle/badwolf
+	url = https://github.com/sjl/badwolf.git
+[submodule "bundle/jedi-vim"]
+	path = bundle/jedi-vim
+	url = https://github.com/davidhalter/jedi-vim.git
+[submodule "bundle/vim-python-pep8-indent"]
+	path = bundle/vim-python-pep8-indent
+	url = https://github.com/Vimjas/vim-python-pep8-indent.git
