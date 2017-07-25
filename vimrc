@@ -1,7 +1,4 @@
 filetype off
-call pathogen#incubate()
-call pathogen#helptags()
-execute pathogen#infect()
 
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
@@ -11,6 +8,34 @@ endif
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'tpope/vim-fugitive'
+Plugin 'wmvanvliet/vim-ipython'
+Plugin 'wmvanvliet/vim-blackboard'
+Plugin 'wmvanvliet/vim-kerbulator'
+Plugin 'w0rp/ale'
+Plugin 'kien/ctrlp.vim'
+Plugin 'sjl/gundo.vim'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'vim-python/python-syntax'
+Plugin 'ervandew/supertab'
+Plugin 'majutsushi/tagbar'
+Plugin 'hynek/vim-python-pep8-indent'
+Plugin 'kana/vim-textobj-user'
+Plugin 'bps/vim-textobj-python'
+Plugin 'FooSoft/vim-argwrap'
+Plugin 'gerw/vim-HiLinkTrace'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
 
 " allow backspacing over everything in insert mode
 set backspace=start,eol,indent
@@ -208,8 +233,6 @@ nmap <leader>8 :call TogglePep8()<CR>
 let python_version_2 = 1
 let python_highlight_all = 1
 
-map <leader>g :GundoToggle<CR>
-
 " CtrlP
 nmap <leader>o :CtrlP<CR>
 
@@ -274,3 +297,7 @@ set cmdheight=2
 " Jedi VIM
 let g:jedi#popup_on_dot = 0
 let g:jedi#show_call_signatures = 2
+
+" Show undo tree
+nmap <leader>u :GundoToggle<CR>
+
