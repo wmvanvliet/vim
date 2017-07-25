@@ -17,6 +17,8 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-repeat'
 Plugin 'wmvanvliet/vim-ipython'
 Plugin 'wmvanvliet/vim-blackboard'
 Plugin 'wmvanvliet/vim-kerbulator'
