@@ -22,8 +22,9 @@ Plugin 'ervandew/supertab'
 Plugin 'FooSoft/vim-argwrap'
 Plugin 'gerw/vim-HiLinkTrace'
 Plugin 'hynek/vim-python-pep8-indent'
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
+"Plugin 'junegunn/fzf'
+"Plugin 'junegunn/fzf.vim'
+Plugin 'kien/ctrlp.vim'
 Plugin 'kana/vim-textobj-user'
 Plugin 'lervag/vimtex'
 Plugin 'majutsushi/tagbar'
@@ -36,7 +37,7 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'vim-python/python-syntax'
 Plugin 'w0rp/ale'
 Plugin 'wmvanvliet/vim-blackboard'
-" Plugin 'wmvanvliet/vim-ipython'
+Plugin 'wmvanvliet/vim-ipython'
 Plugin 'wmvanvliet/vim-kerbulator'
 
 " All of your Plugins must be added before the following line
@@ -128,7 +129,7 @@ if has("gui_running")
       if s:uname == "Darwin\n"
 		set guifont=Menlo:h12
       else
-        set guifont=Inconsolata\ 14
+        set guifont=Inconsolata\ 11
       endif
 	endif
   endif
@@ -313,9 +314,9 @@ command! CLEAN retab | TEOL
 
 " Opening files and buffers
 " nnoremap <Leader>o :CtrlP<CR>
-nmap ; :Buffers<CR>
-nmap <Leader>o :GitFiles<CR>
-nmap <Leader>f :Files<CR>
+nmap ; :CtrlPBuffer<CR>
+nmap <Leader>o :CtrlP<CR>
+nmap <Leader>f :CtrlP .<CR>
 
 " Configure Ack
 if executable('ag')
