@@ -35,10 +35,16 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'vim-python/python-syntax'
-Plugin 'w0rp/ale'
+"Plugin 'w0rp/ale'
+Plugin 'vim-syntastic/syntastic'
 Plugin 'wmvanvliet/vim-blackboard'
-Plugin 'wmvanvliet/vim-ipython'
+"Plugin 'wmvanvliet/vim-ipython'
+Plugin 'wmvanvliet/jupyter-vim'
 Plugin 'wmvanvliet/vim-kerbulator'
+Plugin 'rust-lang/rust.vim'
+
+" Allow working with multiple buffers at once
+set hidden
 
 " All of your Plugins must be added before the following line
 call vundle#end()
@@ -129,7 +135,7 @@ if has("gui_running")
       if s:uname == "Darwin\n"
 		set guifont=Menlo:h12
       else
-        set guifont=Inconsolata\ 11
+        set guifont=Inconsolata\ 14
       endif
 	endif
   endif
@@ -172,6 +178,10 @@ if has("autocmd")
   autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab
   autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist breakindent
   autocmd FileType arduino setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
+
+  " No beeps or flashing please
+  set noerrorbells visualbell t_vb=
+  autocmd GUIEnter * set visualbell t_vb=
 endif
 
 command! -nargs=* Wrap set wrap linebreak nolist
@@ -184,33 +194,39 @@ inoremap <C-e> <C-o>$
 noremap <C-a> ^
 noremap <C-e> $
 
-" IPython integration
-let g:ipy_completefunc='none'
-
-let g:ipy_perform_mappings = 0
-map  <buffer> <silent> <leader>x <Plug>(IPython-RunLines)
-map  <buffer> <silent> <leader>d <Plug>(IPython-OpenPyDoc)
-map  <buffer> <silent> <C-Return> <Plug>(IPython-RunCell)
-map  <buffer> <silent> <F12> <Plug>(IPython-PlotCloseAll)
-
 " Linter
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_save = 1
-let g:ale_linters = {
-\   'python': ['flake8']
-\}
-" By default, don't worry about PEP8
-let g:ale_python_flake8_options = "--ignore=E2,E3,E4,E5,E7,W"
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_save = 1
+" let g:ale_linters = {
+" \   'python': ['flake8']
+" \}
+" " By default, don't worry about PEP8
+" let g:ale_python_flake8_options = "--ignore=E2,E3,E4,E5,E7,W"
 let g:python_highlight_space_errors = 0
+let g:syntastic_python_checkers=['pyflakes']
+ 
+" " Function to enable PEP8 checking
+" function! TogglePep8()
+"   if g:ale_python_flake8_options == ""
+" 	let g:ale_python_flake8_options = "--ignore=E2,E3,E4,E5,E7,W"
+"     setlocal colorcolumn=0
+" 	let g:python_highlight_space_errors = 0
+"   else
+"     let g:ale_python_flake8_options = ""
+"     setlocal colorcolumn=80
+" 	let g:python_highlight_space_errors = 1
+"   endif
+" endfunction
 
 " Function to enable PEP8 checking
 function! TogglePep8()
-  if g:ale_python_flake8_options == ""
-	let g:ale_python_flake8_options = "--ignore=E2,E3,E4,E5,E7,W"
+  let s:pep8_ind = index(g:syntastic_python_checkers, 'pep8')
+  if s:pep8_ind >= 0
+    call remove(g:syntastic_python_checkers, s:pep8_ind)
     setlocal colorcolumn=0
 	let g:python_highlight_space_errors = 0
   else
-    let g:ale_python_flake8_options = ""
+    call add(g:syntastic_python_checkers, 'pep8')
     setlocal colorcolumn=80
 	let g:python_highlight_space_errors = 1
   endif
@@ -221,9 +237,6 @@ nmap <leader>8 :call TogglePep8()<CR>
 
 let python_version_2 = 1  " Python 2 by default
 let python_highlight_all = 1
-
-" CtrlP
-nmap <leader>o :CtrlP<CR>
 
 " File pane
 nmap <leader>e :Lex<CR>
@@ -291,6 +304,7 @@ let g:jedi#show_call_signatures = 2
 let g:jedi#smart_auto_mappings = 0
 
 " Show undo tree
+let g:gundo_prefer_python3 = 1
 nmap <leader>u :GundoToggle<CR>
 
 "" Set python path for completion to work properly
@@ -313,12 +327,23 @@ command! TEOL %s/\s\+$//
 command! CLEAN retab | TEOL
 
 " Opening files and buffers
-" nnoremap <Leader>o :CtrlP<CR>
 nmap ; :CtrlPBuffer<CR>
 nmap <Leader>o :CtrlP<CR>
 nmap <Leader>f :CtrlP .<CR>
+"nmap ; :Buffers<CR>
+"nmap <Leader>o :GFiles<CR>
+"nmap <Leader>f :Files .<CR>
 
 " Configure Ack
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
+
+" IPython integration
+let g:ipy_completefunc='none'
+
+let g:jupyter_mapkeys = 0
+vmap <Leader>x <Plug>JupyterRunVisual
+nnoremap <C-Return> :JupyterSendCell<CR>
+nmap <Leader>x <Plug>JupyterRunTextObj
+
