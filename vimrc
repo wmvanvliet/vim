@@ -17,16 +17,11 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'bps/vim-textobj-python'
-"Plugin 'davidhalter/jedi-vim'
-Plugin 'ervandew/supertab'
 Plugin 'FooSoft/vim-argwrap'
 Plugin 'gerw/vim-HiLinkTrace'
-Plugin 'hynek/vim-python-pep8-indent'
-"Plugin 'junegunn/fzf'
-"Plugin 'junegunn/fzf.vim'
-Plugin 'kien/ctrlp.vim'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 Plugin 'kana/vim-textobj-user'
-Plugin 'lervag/vimtex'
 Plugin 'majutsushi/tagbar'
 Plugin 'mileszs/ack.vim'
 Plugin 'sjl/gundo.vim'
@@ -34,14 +29,17 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
-Plugin 'vim-python/python-syntax'
-"Plugin 'w0rp/ale'
-Plugin 'vim-syntastic/syntastic'
+Plugin 'wmvanvliet/python-syntax'
 Plugin 'wmvanvliet/vim-blackboard'
-"Plugin 'wmvanvliet/vim-ipython'
 Plugin 'wmvanvliet/jupyter-vim'
 Plugin 'wmvanvliet/vim-kerbulator'
 Plugin 'rust-lang/rust.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'junegunn/goyo.vim'
+Plugin 'Vimjas/vim-python-pep8-indent'
+Plugin 'dense-analysis/ale'
+Plugin 'ervandew/supertab'
+Plugin 'morhetz/gruvbox'
 
 " Allow working with multiple buffers at once
 set hidden
@@ -91,17 +89,23 @@ if has("autocmd")
 
   au BufRead,BufNewFile *.pde set filetype=arduino
   au BufRead,BufNewFile *.ino set filetype=arduino
-
-else
-  set autoindent    " always set autoindenting on
+  au BufRead,BufNewFile *.asm set filetype=nasm
 endif
 
+set autoindent    " always set autoindenting on
+
 set cursorline
-set t_Co=256
-"set termguicolors
+"set t_Co=256
+set termguicolors
 set background=dark
 color blackboard
 "color goodwolf
+
+" I usually have a dark background that I would like terminal Vim to use
+hi Normal ctermbg=NONE
+
+" Render python multiline strings as comments
+highlight link pythonMultiString Comment
 
 set tabstop=4
 set shiftwidth=4
@@ -109,6 +113,7 @@ set scrolloff=3
 set formatoptions=qroct
 set number
 set nowrap
+set signcolumn=yes
 
 if has("gui_running")
   " Remove menu bar
@@ -174,10 +179,11 @@ if has("autocmd")
   autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
   autocmd FileType text setlocal ts=8 sts=8 sw=8 noexpandtab linebreak wrap nolist breakindent
   autocmd FileType tex setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist breakindent
-  autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab omnifunc=pythoncomplete#Complete
+  autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab completeopt-=preview
   autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab
   autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist breakindent
   autocmd FileType arduino setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
+  autocmd FileType nasm setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist
 
   " No beeps or flashing please
   set noerrorbells visualbell t_vb=
@@ -186,56 +192,24 @@ endif
 
 command! -nargs=* Wrap set wrap linebreak nolist
 
+" Language servers
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+
 " Things I do often
-nnoremap <Leader>w :w<CR>
-nmap <Leader><Leader> V
 inoremap <C-a> <C-o>^
 inoremap <C-e> <C-o>$
 noremap <C-a> ^
 noremap <C-e> $
 
-" Linter
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_save = 1
-" let g:ale_linters = {
-" \   'python': ['flake8']
-" \}
-" " By default, don't worry about PEP8
-" let g:ale_python_flake8_options = "--ignore=E2,E3,E4,E5,E7,W"
-let g:python_highlight_space_errors = 0
-let g:syntastic_python_checkers=['pyflakes']
- 
-" " Function to enable PEP8 checking
-" function! TogglePep8()
-"   if g:ale_python_flake8_options == ""
-" 	let g:ale_python_flake8_options = "--ignore=E2,E3,E4,E5,E7,W"
-"     setlocal colorcolumn=0
-" 	let g:python_highlight_space_errors = 0
-"   else
-"     let g:ale_python_flake8_options = ""
-"     setlocal colorcolumn=80
-" 	let g:python_highlight_space_errors = 1
-"   endif
-" endfunction
-
-" Function to enable PEP8 checking
-function! TogglePep8()
-  let s:pep8_ind = index(g:syntastic_python_checkers, 'pep8')
-  if s:pep8_ind >= 0
-    call remove(g:syntastic_python_checkers, s:pep8_ind)
-    setlocal colorcolumn=0
-	let g:python_highlight_space_errors = 0
-  else
-    call add(g:syntastic_python_checkers, 'pep8')
-    setlocal colorcolumn=80
-	let g:python_highlight_space_errors = 1
-  endif
-endfunction
-
-" Python PEP8 checking
-nmap <leader>8 :call TogglePep8()<CR>
-
-let python_version_2 = 1  " Python 2 by default
+set pyx=3
+set pythonthreedll=/work/modules/Ubuntu/14.04/amd64/common/anaconda3/latest/envs/neuroimaging_test/lib/libpython3.6m.so
+let python_version_2 = 0  " Python 3 by default
 let python_highlight_all = 1
 
 " File pane
@@ -245,10 +219,7 @@ nmap <leader>e :Lex<CR>
 nmap <leader>t :Tagbar<CR>
 
 " Insert literal TAB character always
-inoremap <C-Tab> <Tab> 
-
-" Supertab
-" let g:SuperTabDefaultCompletionType = "context"
+inoremap <C-Tab> <Tab>
 
 " Copy/paste
 map <leader>y "+y
@@ -262,9 +233,6 @@ nmap <silent> csf %cb
 " GitGutter
 nmap <leader>s :GitGutterSignsToggle<CR>
 let g:gitgutter_signs = 0
-
-" IPython
-let g:ipy_monitor_subchannel = 0
 
 " VimTex
 let g:tex_no_error=1
@@ -298,11 +266,6 @@ let g:indent_guides_auto_colors = 0
 " disappear. We make its height 2 so it always shows.
 set cmdheight=2
 
-" Jedi VIM
-let g:jedi#popup_on_dot = 0
-let g:jedi#show_call_signatures = 2
-let g:jedi#smart_auto_mappings = 0
-
 " Show undo tree
 let g:gundo_prefer_python3 = 1
 nmap <leader>u :GundoToggle<CR>
@@ -326,13 +289,14 @@ nmap <leader>z z=1<CR><CR>
 command! TEOL %s/\s\+$//
 command! CLEAN retab | TEOL
 
-" Opening files and buffers
-nmap ; :CtrlPBuffer<CR>
-nmap <Leader>o :CtrlP<CR>
-nmap <Leader>f :CtrlP .<CR>
-"nmap ; :Buffers<CR>
-"nmap <Leader>o :GFiles<CR>
-"nmap <Leader>f :Files .<CR>
+" Fuzzy search
+"nmap ; :CtrlPBuffer<CR>
+"nmap <Leader>o :CtrlP<CR>
+"nmap <Leader>f :CtrlP .<CR>
+nmap ; :Buffers<CR>
+nmap <Leader>o :GFiles<CR>
+nmap <Leader>f :Files .<CR>
+nmap <Leader>; :BTags<CR>
 
 " Configure Ack
 if executable('ag')
@@ -341,9 +305,42 @@ endif
 
 " IPython integration
 let g:ipy_completefunc='none'
-
+let g:ipy_monitor_subchannel = 0
 let g:jupyter_mapkeys = 0
 vmap <Leader>x <Plug>JupyterRunVisual
-nnoremap <C-Return> :JupyterSendCell<CR>
+nmap <C-Return> :JupyterSendCell<CR>
 nmap <Leader>x <Plug>JupyterRunTextObj
+nmap <Leader>X :JupyterSendCell<CR>
 
+" Autocompletion
+set omnifunc=ale#completion#OmniFunc
+let g:SuperTabDefaultCompletionType = "context"
+
+" Linter
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_save = 1
+let g:ale_linters = {
+\   'python': ['flake8']
+\}
+" By default, don't worry about PEP8
+let g:ale_python_flake8_options = "--ignore=E2,E3,E4,E5,E7,W"
+let g:python_highlight_space_errors = 0
+
+" Function to enable PEP8 checking
+function! TogglePep8()
+  if g:ale_python_flake8_options == ""
+	let g:ale_python_flake8_options = "--ignore=E2,E3,E4,E5,E7,W"
+    set colorcolumn=0
+	let g:python_highlight_space_errors = 0
+  else
+    let g:ale_python_flake8_options = ""
+    set colorcolumn=80
+	let g:python_highlight_space_errors = 1
+  endif
+endfunction
+
+" Python PEP8 checking
+nmap <leader>8 :call TogglePep8()<CR>
+
+" Diffs
+set diffopt=filler,internal,algorithm:histogram,indent-heuristic
