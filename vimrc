@@ -29,17 +29,30 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-tbone'
 Plugin 'wmvanvliet/python-syntax'
 Plugin 'wmvanvliet/vim-blackboard'
 Plugin 'wmvanvliet/jupyter-vim'
 Plugin 'wmvanvliet/vim-kerbulator'
 Plugin 'rust-lang/rust.vim'
 Plugin 'pangloss/vim-javascript'
-Plugin 'junegunn/goyo.vim'
 Plugin 'Vimjas/vim-python-pep8-indent'
 Plugin 'dense-analysis/ale'
 Plugin 'ervandew/supertab'
-Plugin 'morhetz/gruvbox'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'jalvesaq/Nvim-R'
+Plugin 'andymass/vim-matlab'
+Plugin 'JuliaEditorSupport/julia-vim'
+Plugin 'https://github.com/snakemake/snakemake.git', {'rtp': 'misc/vim/'}
+Plugin 'snakemake/snakefmt'
+Plugin 'gmoe/vim-soul'
+Plugin 'heavenshell/vim-pydocstring'
+Plugin 'posva/vim-vue'
+Plugin 'puremourning/vimspector'
+Plugin 'dpelle/vim-LanguageTool'
+Plugin 'sudar/vim-arduino-syntax'
 
 " Allow working with multiple buffers at once
 set hidden
@@ -89,14 +102,16 @@ if has("autocmd")
 
   au BufRead,BufNewFile *.pde set filetype=arduino
   au BufRead,BufNewFile *.ino set filetype=arduino
-  au BufRead,BufNewFile *.asm set filetype=nasm
+  au BufRead,BufNewFile *.asm set filetype=asm
+  au BufRead,BufNewFile *.qml set filetype=qml
+  au BufRead,BufNewFile *.gml set filetype=xml
 endif
 
 set autoindent    " always set autoindenting on
 
 set cursorline
-"set t_Co=256
-set termguicolors
+set t_Co=256
+"set termguicolors
 set background=dark
 color blackboard
 "color goodwolf
@@ -104,16 +119,18 @@ color blackboard
 " I usually have a dark background that I would like terminal Vim to use
 hi Normal ctermbg=NONE
 
-" Render python multiline strings as comments
-highlight link pythonMultiString Comment
+" Render these strings as comments
+"highlight link pythonMultiString Comment
+highlight link rustCommentLineDoc Comment
 
 set tabstop=4
 set shiftwidth=4
 set scrolloff=3
-set formatoptions=qroct
+set formatoptions=qroctj
 set number
 set nowrap
 set signcolumn=yes
+set nojoinspaces  " When joining lines, don't put two spaces after a period (.)
 
 if has("gui_running")
   " Remove menu bar
@@ -138,11 +155,15 @@ if has("gui_running")
     if has("unix")
       let s:uname = system("uname")
       if s:uname == "Darwin\n"
-		set guifont=Menlo:h12
+        set guifont=Menlo:h12
       else
         set guifont=Inconsolata\ 14
+        "set guifont=Fira\ 14
+        "set guifont=Consolas\ 14
+        "set guifont=Luxi\ Mono\ 14
+        "set guifont=Input\ 12
       endif
-	endif
+    endif
   endif
 endif
 
@@ -175,15 +196,23 @@ if has("autocmd")
   autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist breakindent
   autocmd FileType xslt setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
   autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
-  autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
+  autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType json setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType vue setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType julia setlocal ts=4 sts=4 sw=4 expandtab
   autocmd FileType xml setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
   autocmd FileType text setlocal ts=8 sts=8 sw=8 noexpandtab linebreak wrap nolist breakindent
   autocmd FileType tex setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist breakindent
+  "autocmd FileType tex set guifont=Luxi\ Mono\ 14
   autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab completeopt-=preview
+  autocmd FileType r setlocal ts=4 sts=4 sw=4 expandtab completeopt-=preview
   autocmd FileType matlab setlocal ts=4 sts=4 sw=4 expandtab
-  autocmd FileType markdown setlocal ts=8 sts=8 sw=8 noexpandtab wrap linebreak nolist breakindent
+  autocmd FileType markdown setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist breakindent
+  autocmd FileType rst setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist breakindent
   autocmd FileType arduino setlocal ts=2 sts=2 sw=2 expandtab wrap linebreak nolist
-  autocmd FileType nasm setlocal ts=4 sts=4 sw=4 expandtab wrap linebreak nolist
+  autocmd FileType nasm setlocal ts=8 sts=8 sw=8 noexpandtab
+  autocmd FileType asm setlocal ts=8 sts=8 sw=8 noexpandtab
+  autocmd FileType vim setlocal ts=2 sts=2 sw=2 expandtab
 
   " No beeps or flashing please
   set noerrorbells visualbell t_vb=
@@ -192,66 +221,46 @@ endif
 
 command! -nargs=* Wrap set wrap linebreak nolist
 
-" Language servers
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-
 " Things I do often
 inoremap <C-a> <C-o>^
 inoremap <C-e> <C-o>$
-noremap <C-a> ^
-noremap <C-e> $
+nnoremap <C-a> ^
+nnoremap <C-e> $
 
 set pyx=3
-set pythonthreedll=/work/modules/Ubuntu/14.04/amd64/common/anaconda3/latest/envs/neuroimaging_test/lib/libpython3.6m.so
+set pythonthreedll=/m/work/modules/Ubuntu/20.04/amd64/common/neuroimaging/miniconda3/envs/neuroimaging/lib/libpython3.9.so
 let python_version_2 = 0  " Python 3 by default
 let python_highlight_all = 1
 
 " File pane
-nmap <leader>e :Lex<CR>
+nnoremap <leader>e :Lex<CR>
+let g:netrw_winsize = 40  " Width of the file explorer panel
 
 " Tagbar
-nmap <leader>t :Tagbar<CR>
+nnoremap <leader>t :Tagbar<CR>
 
 " Insert literal TAB character always
 inoremap <C-Tab> <Tab>
 
 " Copy/paste
-map <leader>y "+y
-map <leader>p "+p
+nnoremap Y y$
+if exists('$TMUX')
+  map <leader>y :Tyank<CR>
+  map <leader>p :Tput<CR>
+else
+  map <leader>y "+y
+  map <leader>p "+p
+endif
+map <leader>Y "+y$
 map <leader>P "+P
 
 " Surround function object
-nmap <silent> dsf ds)db
-nmap <silent> csf %cb
+nnoremap <silent> dsf ds)db
+nnoremap <silent> csf %cb
 
 " GitGutter
-nmap <leader>s :GitGutterSignsToggle<CR>
+nnoremap <leader>s :GitGutterSignsToggle<CR>
 let g:gitgutter_signs = 0
-
-" VimTex
-let g:tex_no_error=1
-let g:vimtex_view_method = 'zathura'
-"let g:vimtex_view_general_viewer = '/usr/bin/okular'
-"let g:vimtex_view_general_options = '--unique @pdf\#src:@line@tex'
-"let g:vimtex_view_general_options_latexmk = '--unique'
-let g:vimtex_fold_enabled = 0
-let g:vimtex_indent_enabled = 0
-let g:tex_flavor = 'latex'
-let g:vimtex_quickfix_ignore_all_warnings = 1
-"if has("autocmd")
-"  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lm :VimtexCompile<cr>
-"  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lc :VimtexClean<cr>
-"  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lw :VimtexWordCount<cr>
-"  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lv :VimtexView<cr>
-"  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>lt :VimtexTocToggle<CR>
-"  autocmd FileType tex,bib,plaintex nnoremap <silent><Leader>ly :VimtexLabelToggle<CR>
-"endif
 
 " Airline
 set laststatus=2
@@ -268,79 +277,86 @@ set cmdheight=2
 
 " Show undo tree
 let g:gundo_prefer_python3 = 1
-nmap <leader>u :GundoToggle<CR>
-
-"" Set python path for completion to work properly
-"function! SetupPythonPath()
-"	let pythonpath = system('python -c "import sys; print(sys.path)"')
-"	python import vim, sys; sys.path = eval(vim.eval('pythonpath'))
-"endfunction
-"if has("autocmd")
-"	autocmd FileType python call SetupPythonPath()
-"endif
+nnoremap <leader>u :GundoToggle<CR>
 
 " Quickly switch between the current and previous file
-nmap ` :e#<CR>
+nnoremap ` :e#<CR>
 
 " Quickly fix spelling using the first match
-nmap <leader>z z=1<CR><CR>
+nnoremap <leader>z z=1<CR><CR>
 
 " Trim spaces at EOL and retab.
 command! TEOL %s/\s\+$//
 command! CLEAN retab | TEOL
 
 " Fuzzy search
-"nmap ; :CtrlPBuffer<CR>
-"nmap <Leader>o :CtrlP<CR>
-"nmap <Leader>f :CtrlP .<CR>
-nmap ; :Buffers<CR>
-nmap <Leader>o :GFiles<CR>
-nmap <Leader>f :Files .<CR>
-nmap <Leader>; :BTags<CR>
+"norenmap ; :CtrlPBuffer<CR>
+"norenmap <Leader>o :CtrlP<CR>
+"norenmap <Leader>f :CtrlP .<CR>
+nnoremap ; :Buffers<CR>
+nnoremap <Leader>o :GFiles<CR>
+nnoremap <Leader>f :Files .<CR>
+nnoremap <Leader>; :BTags<CR>
+let g:fzf_preview_window = []
 
 " Configure Ack
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-" IPython integration
-let g:ipy_completefunc='none'
-let g:ipy_monitor_subchannel = 0
-let g:jupyter_mapkeys = 0
-vmap <Leader>x <Plug>JupyterRunVisual
-nmap <C-Return> :JupyterSendCell<CR>
-nmap <Leader>x <Plug>JupyterRunTextObj
-nmap <Leader>X :JupyterSendCell<CR>
-
 " Autocompletion
 set omnifunc=ale#completion#OmniFunc
 let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
 
-" Linter
+" Only run linter when saving
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_save = 1
-let g:ale_linters = {
-\   'python': ['flake8']
-\}
-" By default, don't worry about PEP8
-let g:ale_python_flake8_options = "--ignore=E2,E3,E4,E5,E7,W"
-let g:python_highlight_space_errors = 0
-
-" Function to enable PEP8 checking
-function! TogglePep8()
-  if g:ale_python_flake8_options == ""
-	let g:ale_python_flake8_options = "--ignore=E2,E3,E4,E5,E7,W"
-    set colorcolumn=0
-	let g:python_highlight_space_errors = 0
-  else
-    let g:ale_python_flake8_options = ""
-    set colorcolumn=80
-	let g:python_highlight_space_errors = 1
-  endif
-endfunction
-
-" Python PEP8 checking
-nmap <leader>8 :call TogglePep8()<CR>
+let g:ale_lint_on_insert_leave = 0
 
 " Diffs
 set diffopt=filler,internal,algorithm:histogram,indent-heuristic
+
+" Tags for markdown files
+let g:tagbar_type_markdown = {
+  \ 'ctagstype': 'markdown',
+  \ 'ctagsbin' : '~/.local/bin/markdown2ctags.py',
+  \ 'ctagsargs' : '-f - --sort=yes --sro=»',
+  \ 'kinds' : [
+      \ 's:sections',
+      \ 'i:images'
+  \ ],
+  \ 'sro' : '»',
+  \ 'kind2scope' : {
+      \ 's' : 'section',
+  \ },
+  \ 'sort': 0,
+\ }
+
+
+" Airline statusline
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.linenr = ''
+let g:airline_symbols.maxlinenr = ''
+let g:airline_section_b = ''
+let g:airline_section_x = ''
+
+" Don't sync the clipboard over a remote connection. Takes way too long.
+set clipboard=exclude:.*
+
+let R_assign = 0
+
+" Underlining things
+noremap <leader>- yyp^v$r-^
+noremap <leader>= yyp^v$r=^
+noremap <leader># yyp^v$r#^
+noremap <leader>~ yyp^v$r~^
+
+" Debugging
+let g:vimspector_enable_mappings = 'HUMAN'
+
+" Spelling and such
+let g:languagetool_jar='$HOME/.local/LanguageTool-5.2/languagetool-commandline.jar'
